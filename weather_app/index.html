@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Forecast</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #72edf2 10%, #5151e5 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .weather-card {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            color: #fff;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+            
+        .search-container {
+            display: flex;
+            margin-bottom: 30px;
+        }
+
+        .search-container input {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 30px 0 0 30px;
+            outline: none;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        .search-container button {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 0 30px 30px 0;
+            background: #5151e5;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        .search-container button:hover {
+            background: #3a3ac2;
+        }
+
+        .weather-icon {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 20px;
+            display: block;
+        }
+
+        .temperature {
+            font-size: 60px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .city {
+            font-size: 28px;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .details {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .detail-item {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            width: calc(50% - 10px);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .detail-item img {
+            width: 40px;
+            margin-right: 15px;
+        }
+
+        .detail-text {
+            text-align: left;
+        }
+
+        .detail-text p:first-child {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 5px;
+        }
+
+        .detail-text p:last-child {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .weather-condition {
+            font-size: 20px;
+            margin-bottom: 20px;
+            text-transform: capitalize;
+        }
+
+        @media (max-width: 500px) {
+            .detail-item {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="weather-card">
+        <div class="search-container">
+            <input type="text" placeholder="Search for a city..." id="searchbox">
+            <button id="searchbutton">Search</button>
+        </div>
+
+        <img src="https://cdn-icons-png.flaticon.com/512/1163/1163661.png" alt="Weather Icon" class="weather-icon">
+        
+        <div class="temperature">24°C</div>
+        <div class="weather-condition">Partly Cloudy</div>
+        <div class="city">New York</div>
+
+        <div class="details">
+            <div class="detail-item">
+                <img src="https://cdn-icons-png.flaticon.com/512/7405/7405455.png" alt="Humidity">
+                <div class="detail-text">
+                    <p>Humidity</p>
+                    <p id="humidity">65%</p>  
+                </div>
+            </div>
+        
+            <div class="detail-item">
+                <img src="https://cdn-icons-png.flaticon.com/512/7405/7405473.png" alt="Wind Speed">
+                <div class="detail-text">
+                    <p>Wind Speed</p>
+                    <p id="wind">12 km/h</p>  
+                </div>
+            </div>
+        
+            <div class="detail-item">
+                <img src="https://cdn-icons-png.flaticon.com/512/7405/7405466.png" alt="Feels Like">
+                <div class="detail-text">
+                    <p>Feels Like</p>
+                    <p id="feel">26°C</p>  
+                </div>
+            </div>
+        
+            <div class="detail-item">
+                <img src="https://cdn-icons-png.flaticon.com/512/7405/7405445.png" alt="Pressure">
+                <div class="detail-text">
+                    <p>Pressure</p>
+                    <p id="pressure">1012 hPa</p>  
+                </div>
+            </div>
+        </div>        
+    </div>
+    <script>
+        const apiKey="65022034b6b1ecfad0445fce85a189a2";
+        const apiUrl="https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
+
+        const searchContent=document.querySelector("#searchbox");
+        const searchBtn=document.querySelector("#searchbutton")
+
+        async function checkWeather(city){
+            const response= await fetch(apiUrl + city + "&appid="+apiKey);
+            const data=await response.json();
+            console.log(data);
+        
+        document.querySelector(".temperature").innerHTML=Math.round(data.main.temp) + "°C";
+        document.querySelector(".weather-condition").innerHTML=data.weather[0].description + " | " + data.weather[0].main;
+        document.querySelector(".city").innerHTML=data.name + ", " + data.sys.country;
+        document.getElementById("humidity").innerHTML=data.main.humidity +  "%";
+        document.getElementById("wind").innerHTML=data.wind.speed+  "km/h";
+        document.getElementById("feel").innerHTML=data.main.feels_like + "°C";
+        document.getElementById("pressure").innerHTML=data.main.pressure + "hPa";
+        }
+        
+        searchBtn.addEventListener("click",()=>{
+            checkWeather(searchContent.value); 
+        })
+        searchContent.addEventListener("keypress",(e)=>{
+            if(e.key==="Enter"){
+                searchBtn.click();
+            }
+        })
+    </script>
+</body>
+</html>
