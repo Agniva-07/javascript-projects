@@ -26,17 +26,17 @@ inputBox.addEventListener("keypress", function(e) {
     }
 });
 
-// function downloadQR() {
-//     if (!image.src) {
-//         alert("Generate a QR code first!");
-//         return;
-//     }
+function downloadQR() {
+    if (!image.src) {
+        alert("Generate a QR code first!");
+        return;
+    }
 
-//     const link = document.createElement("a");
-//     link.href = image.src;
-//     link.download = "qr-code.png";
-//     document.body.appendChild(link);
-//     link.click();
-//     document.body.removeChild(link);
-// }
-// downloadBtn.addEventListener("click", downloadQR);
+    const link = document.createElement("a");
+    link.href = image.src;
+    link.download = "qr-code.png";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+downloadBtn.addEventListener("click", downloadQR);

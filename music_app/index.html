@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colorful Glassmorphism Music Player</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+        
+        :root {
+            --primary-color: rgba(255, 255, 255, 0.25);
+            --secondary-color: rgba(255, 255, 255, 0.15);
+            --text-color: #ffffff;
+            --blur: 12px;
+            --accent-color-1: #ff6b6b;
+            --accent-color-2: #4ecdc4;
+            --accent-color-3: #ffbe0b;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) no-repeat center center fixed;
+            background-size: cover;
+            color: var(--text-color);
+            position: relative;
+            overflow: hidden;
+            animation: gradientShift 15s ease infinite;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: -1;
+        }
+        
+        .player-container {
+            width: 90%;
+            max-width: 400px;
+            backdrop-filter: blur(var(--blur));
+            -webkit-backdrop-filter: blur(var(--blur));
+            background: var(--primary-color);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .player-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.4);
+        }
+        
+        .player-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                45deg,
+                rgba(255, 107, 107, 0.1) 0%,
+                rgba(78, 205, 196, 0.1) 50%,
+                rgba(255, 190, 11, 0.1) 100%
+            );
+            transform: skewX(-15deg) translateX(-30%);
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .now-playing {
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 300;
+            font-size: 14px;
+            opacity: 0.8;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent-color-3);
+        }
+        
+        .song-info {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .song-title {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            background: linear-gradient(45deg, var(--accent-color-1), var(--accent-color-2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .song-artist {
+            font-size: 16px;
+            font-weight: 300;
+            opacity: 0.9;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+        
+        #play-btn {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-color-1), var(--accent-color-2));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        
+        #play-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        #play-btn {
+            font-size: 28px;
+            color: white;
+        }
+        
+        .prev-btn, .next-btn {
+            font-size: 22px;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .prev-btn:hover, .next-btn:hover {
+            opacity: 1;
+            transform: scale(1.2);
+            color: var(--accent-color-3);
+        }
+        
+        .progress-container {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            overflow: hidden;
+        }
+        
+        .time-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            opacity: 0.8;
+            margin-bottom: 30px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .fullscreen-info {
+            text-align: center;
+            font-size: 12px;
+            opacity: 0.7;
+            margin-top: 20px;
+            color: rgba(255, 255, 255, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .fullscreen-info i {
+            margin-left: 5px;
+            color: var(--accent-color-3);
+        }
+
+        .progressBar {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            background: #f53192;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 40px 0;
+        }
+
+        .progressBar::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            background: #f53192;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 8px solid #fff;
+        }
+        #pc{
+            margin-left: 40px;
+            height: 220px;
+            width: 270px;
+            border: 2.5px solid black;
+            box-shadow: 0 8px 10px rgba(0, 0, 0, 0.3);;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="player-container">
+        <div class="now-playing">NOW PLAYING</div>
+        <div class="song-info">
+            <div class="song-title">Neele Neele Ambar Par</div>
+            <div class="song-artist">Kishore Kumar</div>
+        </div>
+        <audio id="song" src="Neele Neele Ambar Par Male Version Kalaakaar 128 Kbps.mp3"></audio>
+        <img src="https://images.tribuneindia.com/cms/gall_content/2018/8/2018_8$largeimg04_Saturday_2018_151441760.jpg" alt="pic" id="pc">
+
+        <input type="range" value="0" class="progressBar">
+
+        <div class="controls">
+            <div class="prev-btn"><i class="fas fa-step-backward"></i></div>
+            <div><i class="fas fa-play" id="play-btn"></i></div>
+            <div class="next-btn"><i class="fas fa-step-forward"></i></div>
+        </div>
+        
+        
+        <!-- <div class="time-info">
+            <span class="current-time">1:23</span>
+            <span class="duration">3:42</span>
+        </div> -->
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
